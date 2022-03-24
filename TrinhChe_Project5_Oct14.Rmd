@@ -1,0 +1,64 @@
+---
+title: "TrinhChe_Oct14_Project5"
+author: "Trinh Che"
+date: "10/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Part 2: Write a function to generate some data
+
+This is where Trinh has written a function that generates some noisy data that fits an approximate linear model. The function will take in an argument that is the number of data points to generate.
+
+```{r}
+# Part 2
+generateData <- function(N) {
+  set.seed(2310)
+  tmpx <- c(runif(N,0,100))
+  tmpy = (tmpx + rnorm(N,mean=0,sd=5))*3.14 + 10 + rnorm(N,mean=0,sd=10)
+  df <- data.frame(x=tmpx,y=tmpy)
+  return(df)
+}
+df <- generateData(100)
+
+```
+### Part 3: Plotting my Data
+
+In part 3, Trinh has plotted two data columns "x" and "y" of data frame "df" as specified in part 2, along with linear regression and a best fit line.
+
+```{r}
+# Part 3
+model <- lm(df$y ~ df$x)
+
+plot(df$x, df$y, pch=19, col="darkblue")
+abline(model,lwd=3,col="darkred")
+text(50,100,labels=paste("y= ",round(model$coefficients[2],3),"*x + ",round(model$coefficients[1])))
+```
+
+
+
+### Part 4: Explore a dataset of Trinh's choice
+
+In part 4, Trinh will pick a data set and repeat the exercise above with new data, making it look nice using the Markdown capabilities.
+
+```{r}
+# Part 4
+library(foreign, lib.loc = "C:/Program Files/R/R-4.0.2/library")
+
+gss91 <- read.spss('GSS1991.sav',use.value.labels=FALSE,to.data.frame=TRUE,trim_values=TRUE)
+model2 <- lm(gss91$AGE ~ gss91$WRKYEARS)
+
+plot(gss91$WRKYEARS, gss91$AGE, pch=19, col="purple", main="Relationship between Respondent's Age and Workyears in GSS1991 dataset")
+abline(model2,lwd=2,col="green")
+text(55,60,labels=paste("y= ",round(model2$coefficients[2],3),"*x + ",round(model2$coefficients[1])))
+
+
+```
+
+
+### Discussion of Part 4
+
+After reading the dataset with foreign package, Trinh plotted the two gss91 columns Age vs. Workyears, and then analyzed if there was any linear regression relationship. The result was meaningful: The best fit line showed that there was linear regression relationship between Respondent's age and their corresponding workyears, which is true to reality. 
+
